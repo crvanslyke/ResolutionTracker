@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Resolutions - Virtue Habit Tracker{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h2 style="margin: 0;">Your Resolutions</h2>
+        <a href="{{ url_for('add_resolution') }}" class="btn btn-primary">Add New Resolution</a>
+    </div>
+
+    {% if resolutions %}
+        <table class="history-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Virtue</th>
+                    <th>Created</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for res in resolutions %}
+                    <tr>
+                        <td>
+                            <strong>{{ res.name }}</strong>
+                            {% if res.description %}
+                                <div class="text-muted" style="font-size: 0.9rem;">{{ res.description }}</div>
+                            {% endif %}
+                        </td>
+                        <td>{{ res.virtue or '-' }}</td>
+                        <td>{{ res.created_date }}</td>
+                        <td>
+                            {% if res.is_active %}
+                                <span style="color: var(--success-color); font-weight: 600;">Active</span>
+                            {% else %}
+                                <span style="color: var(--text-muted);">Inactive</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{{ url_for('resolution_detail', resolution_id=res.id) }}" class="btn btn-secondary btn-small">View</a>
+                            <a href="{{ url_for('edit_resolution', resolution_id=res.id) }}" class="btn btn-secondary btn-small">Edit</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="text-center" style="padding: 2rem 0;">
+            <p class="text-muted">No resolutions yet. Start your virtue journey!</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

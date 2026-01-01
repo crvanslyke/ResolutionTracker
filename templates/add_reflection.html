@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Add Weekly Reflection - Virtue Habit Tracker{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Weekly Reflection</h2>
+    <p class="text-muted">Week starting {{ week_start }}</p>
+
+    {% if resolutions %}
+        <form method="POST" action="{{ url_for('add_reflection') }}">
+            <div class="form-group">
+                <label for="resolution_id">Resolution *</label>
+                <select id="resolution_id" name="resolution_id" required>
+                    <option value="">Select a resolution...</option>
+                    {% for res in resolutions %}
+                        <option value="{{ res.id }}">
+                            {{ res.name }}
+                            {% if res.virtue %}({{ res.virtue }}){% endif %}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="balance_reflection">Finding the Right Balance</label>
+                <textarea id="balance_reflection" name="balance_reflection" rows="4"
+                          placeholder="Am I finding the right balance with this practice? Am I doing too much, too little, or just right? What adjustments might help?"></textarea>
+                <small class="text-muted">
+                    Aristotle taught that virtue lies in the mean between extremes. Reflect on whether you're finding that balance.
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="observations">General Observations</label>
+                <textarea id="observations" name="observations" rows="4"
+                          placeholder="What patterns are you noticing? What's working well? What challenges are you facing? How is this practice changing you?"></textarea>
+            </div>
+
+            <div style="text-align: center; margin-top: 2rem;">
+                <button type="submit" class="btn btn-primary">Save Reflection</button>
+                <a href="{{ url_for('reflections') }}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    {% else %}
+        <div class="text-center" style="padding: 2rem 0;">
+            <p class="text-muted">You don't have any active resolutions to reflect on.</p>
+            <a href="{{ url_for('add_resolution') }}" class="btn btn-primary" style="margin-top: 1rem;">Create a Resolution</a>
+        </div>
+    {% endif %}
+</div>
+
+<div class="card" style="background-color: #fff8e1; border-left: 4px solid var(--warning-color);">
+    <h3 style="margin-bottom: 0.5rem;">Reflection Prompts</h3>
+    <ul style="margin: 0.5rem 0; padding-left: 1.5rem; line-height: 1.8;">
+        <li>Is this practice becoming easier or more natural over time?</li>
+        <li>Am I being too rigid or too lenient with myself?</li>
+        <li>What obstacles came up this week?</li>
+        <li>How has this practice affected other areas of my life?</li>
+        <li>Do I need to adjust my approach?</li>
+    </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Daily Check-in - Virtue Habit Tracker{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Daily Practice Check-in</h2>
+    <p class="text-muted">{{ today_formatted }}</p>
+
+    {% if resolutions %}
+        <form method="POST" action="{{ url_for('daily_checkin') }}">
+            {% for res in resolutions %}
+                <div class="checkin-item">
+                    <div class="checkin-header">
+                        <input type="checkbox"
+                               id="completed_{{ res.id }}"
+                               name="completed_{{ res.id }}"
+                               {% if res.completed %}checked{% endif %}>
+                        <label for="completed_{{ res.id }}">
+                            <strong>{{ res.name }}</strong>
+                            {% if res.virtue %}
+                                <span style="color: var(--secondary-color); font-size: 0.9rem;">
+                                    ({{ res.virtue }})
+                                </span>
+                            {% endif %}
+                            {% if res.description %}
+                                <div style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.25rem;">
+                                    {{ res.description }}
+                                </div>
+                            {% endif %}
+                        </label>
+                    </div>
+
+                    <div class="form-group" style="margin-left: 2.5rem;">
+                        <label style="font-size: 0.95rem;">How automatic did this feel? (optional)</label>
+                        <div class="automaticity-input">
+                            {% for i in range(1, 6) %}
+                                <label style="min-width: auto;">
+                                    <input type="radio"
+                                           name="automaticity_{{ res.id }}"
+                                           value="{{ i }}"
+                                           {% if res.automaticity_score == i %}checked{% endif %}>
+                                    {{ i }}
+                                </label>
+                            {% endfor %}
+                        </div>
+                        <div class="automaticity-labels">
+                            <span>Required effort</span>
+                            <span>Becoming natural</span>
+                            <span>Fully automatic</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-left: 2.5rem;">
+                        <label for="notes_{{ res.id }}" style="font-size: 0.95rem;">Notes (optional)</label>
+                        <textarea id="notes_{{ res.id }}"
+                                  name="notes_{{ res.id }}"
+                                  rows="2"
+                                  placeholder="Any observations about today's practice?">{{ res.notes or '' }}</textarea>
+                    </div>
+                </div>
+            {% endfor %}
+
+            <div style="margin-top: 1.5rem; text-align: center;">
+                <button type="submit" class="btn btn-success">Complete Check-in</button>
+                <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    {% else %}
+        <div class="text-center" style="padding: 2rem 0;">
+            <p class="text-muted">You don't have any active resolutions to check in on.</p>
+            <a href="{{ url_for('add_resolution') }}" class="btn btn-primary" style="margin-top: 1rem;">Create a Resolution</a>
+        </div>
+    {% endif %}
+</div>
+
+<div class="card" style="background-color: #e7f3ff; border-left: 4px solid var(--primary-color);">
+    <h3 style="margin-bottom: 0.5rem;">💡 Remember</h3>
+    <p style="margin: 0; line-height: 1.8;">
+        Aristotle taught that virtue is a habit formed through practice. Don't worry about perfection—
+        focus on consistency. Each day of practice strengthens the habit until it becomes part of your character.
+    </p>
+</div>
+{% endblock %}

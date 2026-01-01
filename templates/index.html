@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Virtue Habit Tracker{% endblock %}
+
+{% block content %}
+<div class="dashboard-summary">
+    <div class="summary-card">
+        <div class="number">{{ total_resolutions }}</div>
+        <div class="label">Active Resolutions</div>
+    </div>
+    <div class="summary-card">
+        <div class="number">{{ checked_in_today }}</div>
+        <div class="label">Checked In Today</div>
+    </div>
+</div>
+
+{% if checked_in_today < total_resolutions and total_resolutions > 0 %}
+    <div class="card" style="background-color: #fff3cd; border-left: 4px solid #ffc107;">
+        <p style="margin: 0;">
+            <strong>Daily practice awaits!</strong> You haven't completed today's check-in yet.
+            <a href="{{ url_for('daily_checkin') }}" class="btn btn-primary btn-small" style="margin-left: 1rem;">Check In Now</a>
+        </p>
+    </div>
+{% endif %}
+
+{% if resolutions %}
+    <h2 style="margin-bottom: 1rem;">Your Virtues in Progress</h2>
+    {% for res in resolutions %}
+        <div class="card resolution-card">
+            <div class="virtue">{{ res.virtue or 'Personal Growth' }}</div>
+            <h3>
+                <a href="{{ url_for('resolution_detail', resolution_id=res.id) }}" style="color: inherit; text-decoration: none;">
+                    {{ res.name }}
+                </a>
+            </h3>
+            {% if res.description %}
+                <p class="description">{{ res.description }}</p>
+            {% endif %}
+
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-value">{{ res.streak }}</span>
+                    <span class="stat-label">Day Streak</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">{{ res.completion_rate }}%</span>
+                    <span class="stat-label">30-Day Rate</span>
+                </div>
+                {% if res.avg_automaticity %}
+                    <div class="stat">
+                        <span class="stat-value automaticity-score">{{ res.avg_automaticity }}</span>
+                        <span class="stat-label">Automaticity</span>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div style="margin-top: 1rem;">
+                <a href="{{ url_for('resolution_detail', resolution_id=res.id) }}" class="btn btn-secondary btn-small">View Details</a>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <div class="card text-center">
+        <h2>Welcome to Your Virtue Journey!</h2>
+        <p style="color: var(--text-muted); margin: 1rem 0;">
+            You haven't created any resolutions yet. Start by defining the virtues you want to cultivate through daily practice.
+        </p>
+        <a href="{{ url_for('add_resolution') }}" class="btn btn-primary">Create Your First Resolution</a>
+    </div>
+{% endif %}
+{% endblock %}

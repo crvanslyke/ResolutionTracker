@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Resolution - Virtue Habit Tracker{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Edit Resolution</h2>
+
+    <form method="POST" action="{{ url_for('edit_resolution', resolution_id=resolution.id) }}">
+        <div class="form-group">
+            <label for="name">Resolution Name *</label>
+            <input type="text" id="name" name="name" required value="{{ resolution.name }}">
+        </div>
+
+        <div class="form-group">
+            <label for="virtue">Virtue Being Developed</label>
+            <input type="text" id="virtue" name="virtue" value="{{ resolution.virtue or '' }}">
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description">{{ resolution.description or '' }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label>
+                <input type="checkbox" name="is_active" {% if resolution.is_active %}checked{% endif %}>
+                Active (include in daily check-ins)
+            </label>
+            <small class="text-muted" style="display: block; margin-top: 0.25rem;">
+                Inactive resolutions are hidden from check-ins but their data is preserved.
+            </small>
+        </div>
+
+        <div style="text-align: center; margin-top: 2rem;">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a href="{{ url_for('resolutions') }}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

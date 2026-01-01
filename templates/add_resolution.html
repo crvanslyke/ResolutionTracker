@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Add Resolution - Virtue Habit Tracker{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Create a New Resolution</h2>
+    <p class="text-muted">Define a practice that will help you cultivate a specific virtue or character trait.</p>
+
+    <form method="POST" action="{{ url_for('add_resolution') }}">
+        <div class="form-group">
+            <label for="name">Resolution Name *</label>
+            <input type="text" id="name" name="name" required
+                   placeholder="e.g., Morning meditation, Daily exercise, Read for 30 minutes">
+        </div>
+
+        <div class="form-group">
+            <label for="virtue">Virtue Being Developed</label>
+            <input type="text" id="virtue" name="virtue"
+                   placeholder="e.g., Mindfulness, Discipline, Wisdom">
+            <small class="text-muted">What character trait does this practice cultivate?</small>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description"
+                      placeholder="Describe what this practice involves and why it matters to you..."></textarea>
+        </div>
+
+        <div style="text-align: center; margin-top: 2rem;">
+            <button type="submit" class="btn btn-primary">Create Resolution</button>
+            <a href="{{ url_for('resolutions') }}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<div class="card" style="background-color: #f0f8ff; border-left: 4px solid var(--secondary-color);">
+    <h3 style="margin-bottom: 0.5rem;">Examples of Virtue-Building Practices</h3>
+    <ul style="margin: 0.5rem 0; padding-left: 1.5rem; line-height: 1.8;">
+        <li><strong>Temperance:</strong> Limit social media to 30 minutes per day</li>
+        <li><strong>Courage:</strong> Have one difficult conversation each week</li>
+        <li><strong>Justice:</strong> Volunteer or help someone in need weekly</li>
+        <li><strong>Wisdom:</strong> Read philosophy or literature for 20 minutes daily</li>
+        <li><strong>Generosity:</strong> Perform one act of kindness each day</li>
+    </ul>
+</div>
+{% endblock %}
