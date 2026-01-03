@@ -185,7 +185,7 @@ This is a personal tool provided as-is. Feel free to modify and adapt it to your
 ## Aristotelian Wisdom
 
 > "We are what we repeatedly do. Excellence, then, is not an act, but a habit."
-> — Aristotle
+> — Durant, paraphrasing Aristotle
 
 > "Virtue is concerned with passions and actions... The mean is a matter of choosing the right amount - not too much, not too little."
 > — Aristotle, Nicomachean Ethics
